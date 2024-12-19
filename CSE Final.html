@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trash Sorter</title>
+  <style>
+     body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url('https://static.vecteezy.com/system/resources/thumbnails/033/082/147/small_2x/plastic-trash-in-the-ocean-environmental-pollution-concept-3d-rendering-plastic-pollution-in-the-sea-global-warming-concept-3d-rendering-ai-generated-free-photo.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+    }
+
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+    }
+
+
+    h1 {
+      font-size: 28px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+
+    select, button {
+      padding: 12px;
+      font-size: 18px;
+      margin-top: 10px;
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+    }
+
+
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+
+    button:hover {
+      background-color: #218838;
+    }
+
+
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+
+    .error {
+      color: #ff0000;
+    }
+
+
+    .extra-buttons {
+      margin-top: 20px;
+      text-align: center;
+      width: 90%;
+      max-width: 500px;
+    }
+
+
+    .extra-buttons button {
+      display: block;
+      margin: 10px auto;
+      padding: 12px;
+      font-size: 18px;
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 5px;
+      background-color: #002aff;
+      color: white;
+      font-weight: bold;
+      border: none;
+    }
+
+
+    .extra-buttons button:hover {
+      background-color: #0056b3;
+    }
+
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 20px;
+      }
+
+
+      h1 {
+        font-size: 24px;
+      }
+
+
+      select, button {
+        font-size: 16px;
+      }
+
+
+      .extra-buttons button {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body style = "background-image: url(https://static.vecteezy.com/system/resources/thumbnails/033/082/147/small_2x/plastic-trash-in-the-ocean-environmental-pollution-concept-3d-rendering-plastic-pollution-in-the-sea-global-warming-concept-3d-rendering-ai-generated-free-photo.jpg);">
+
+
+  <div><h1 style ="color: white; padding: 13px; font-size: 30px; background-color: rgb(0, 187, 255); border-radius: 8px">Welcome to EcoSort!</h1></div>
+  <div><h2 style="background-color: green; color: white; padding: 10px; border-radius: 8px; font-size: 20px">To start, select an item from the list below.</h2></div>
+
+
+<div class="container">
+  <h1>Trash Sorter</h1>
+  <select id="itemSelect">
+    <option value="">Select a trash item...</option>
+    <option value="plastic bottle">Plastic Bottle</option>
+    <option value="aluminum">Aluminum</option>
+    <option value="cardboard">Cardboard</option>
+    <option value="glass bottle">Glass Bottle</option>
+    <option value="foil wrapper">Foil Wrapper</option>
+    <option value="broken glass">Broken Glass</option>
+    <option value="tin can">Tin Can</option>
+    <option value="styrofoam">Styrofoam</option>
+    <option value="food waste">Food Waste</option>
+    <option value="paper">Paper</option>
+  </select>
+  <button onclick="sortTrash()">Sort Trash</button>
+  <div class="result" id="result"></div>
+</div>
+
+
+<div class="extra-buttons">
+  <button id="importantButton">Why is this important?</button>
+  <p style="display: none; border-radius: 9px; background-color: green; font-weight: bold; color: white; padding: 10px;" id="importantText">This is the important text you want to highlight.</p>
+</div>
+
+<script>
+  function sortTrash() {
+    var item = document.getElementById("itemSelect").value;
+    var resultDiv = document.getElementById("result");
+
+
+    if (!item) {
+      resultDiv.innerHTML = '<span class="error">Please select a valid trash item from the list.</span>';
+      return;
+    }
+
+
+    resultDiv.innerHTML = 'Sorting...';
+
+
+    setTimeout(function() {
+      var response = getMockResponse(item);
+
+
+      if (response) {
+        resultDiv.innerHTML = 'Dispose this item as: <span style="color: ' + response.color + ';">' + response.type + '</span>';
+      } else {
+        resultDiv.innerHTML = '<span class="error">Sorry, we could not find a sorting method for "' + item + '". Please try another item.</span>';
+      }
+    }, 1000);
+  }
+
+
+  function getMockResponse(item) {
+    const wasteData = {
+      "plastic bottle": { type: "Recyclable", color: "green" },
+      "pizza box": { type: "Landfill", color: "red" },
+      "aluminum": { type: "Recyclable", color: "green" },
+      "cardboard": { type: "Recyclable", color: "green" },
+      "glass bottle": { type: "Recyclable", color: "green" },
+      "tin can": { type: "Recyclable", color: "green" },
+      "foil wrapper": { type: "Recyclable", color: "green" },
+      "broken glass": { type: "Landfill", color: "red" },
+      "styrofoam": { type: "Landfill", color: "red" },
+      "food waste": { type: "Compost", color: "yellow" },
+      "paper": { type: "Recyclable", color: "green" },
+    };
+
+
+    return wasteData[item.toLowerCase()];
+  }
+
+
+    const importantButton = document.getElementById('importantButton')
+    const importantText = document.getElementById('importantText')
+    importantButton.addEventListener('click', function() {
+      if (importantText.style.display === 'none') {
+        importantText.textContent = 'When we properly sort garbage into their respective bins, we help improve air quality as well as water quality, and reduce greenhouse gas emissions. Properly sorting waste means that less ends up in landfills and more of what we throw away can be reused and recycled. When plastic is thrown in thrown in a bin besides the recycle bin, it is dumped in the ocean where turtles and other sea creatures mistake it for food. So sorting trash in the correct bins is really important to improve the conditions of our world and save the lives of many animals.'
+        importantButton.textContent = 'Close'
+        importantText.style.display = 'block'
+      } else {
+        importantText.style.display = 'none'
+        importantButton.textContent = 'Why is this important?'
+      }
+
+
+    })
+    
+
+
+</script>
+
+
+</body>
+</html>
